@@ -1,0 +1,18 @@
+<script>
+    window.addEventListener('message', function (e) {
+        console.log(e);
+        if (e.origin === 'https://beautifulsparks.outgrow.us' && e.data === '[iFrameSizer]og_iframe_64df1b0ed5566776f06ed144:643:1140:mutationObserver') {
+            try {
+                // Push the 'iFrame_submit' event to dataLayer
+                window.dataLayer = window.dataLayer || [];
+                window.dataLayer.push({
+                    'event': 'iFrame_Click',
+                    'eventData': e.data,
+                    // Add additional data if needed
+                });
+            } catch (error) {
+                console.error('Error pushing to dataLayer:', error);
+            }
+        }
+    });
+</script>
