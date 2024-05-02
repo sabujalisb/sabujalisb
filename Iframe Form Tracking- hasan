@@ -1,0 +1,32 @@
+// iframe code 
+(function() {
+  var form = document.querySelector('form[action="FormConfirmation.aspx?sourceformid=41&formid=42"]');
+  if(form) {
+    
+    var queryString = form.getAttribute('action');
+    form.addEventListener('submit', function (event) {
+
+          var formData = new FormData(this);
+          var userInputs = {};
+      
+          formData.forEach(function(value, key) {
+              userInputs[key] = value;
+          });
+
+          window.top.postMessage(JSON.stringify(userInputs), 'https://www.main-website.com');
+      });  
+  }
+})();
+
+
+//website code
+window.addEventListener('message', function (event) {
+    if(event.origin !== 'https://iframe-site.com') return false;
+    var data = JSON.parse(event.data);
+
+    window.dataLayer = window.dataLayer || [];
+    dataLayer.push({
+        event: 'iframe_form_submit',
+        formData: data
+    });
+});
