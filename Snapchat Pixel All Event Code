@@ -1,0 +1,46 @@
+// snap source
+(function(e,t,n){if(e.snaptr)return;var
+ a=e.snaptr=function() {a.handleRequest?a.handleRequest.apply(a,arguments):a.queue.push(arguments)}; a.queue=[];var s='script';r=t.createElement(s);r.async=!0; r.src=n;var u=t.getElementsByTagName(s)[0]; u.parentNode.insertBefore(r,u);})(window,document, 'https://sc-static.net/scevent.min.js');
+
+const snaptrId = '1088a298-8442-451a-8799-6d79bc461c8a'
+
+analytics.subscribe("page_viewed", event => {
+  // snap
+  snaptr('init', snaptrId, { 
+    'user_email': event.customer?.email,
+    'user_phone_number': event.customer?.phone,
+    'user_name': event.customer?.firstName + ' ' + event.customer?.lastName
+  });  
+  snaptr('track', 'PAGE_VIEW',{
+    'description': event.context.window.location.href
+  }); 
+});
+
+analytics.subscribe("product_added_to_cart", event => {
+  snaptr('init', snaptrId, { 
+    'user_email': event.customer?.email,
+    'user_phone_number': event.customer?.phone,
+    'user_name': event.customer?.firstName + ' ' + event.customer?.lastName
+  });
+  
+  snaptr('track', 'ADD_CART',{
+    'price': event.data.cartLine.cost.totalAmount.amount,
+    'currency': event.data.cartLine.cost.totalAmount.currencyCode,
+    'number_items': event.data.cartLine.quantity,
+    'item_ids': [event.data.cartLine.merchandise.id]
+  }); 
+});
+
+analytics.subscribe("checkout_completed", event => {
+  snaptr('init', snaptrId, { 
+    'user_email': event.customer?.email,
+    'user_phone_number': event.customer?.phone,
+    'user_name': event.customer?.firstName + ' ' + event.customer?.lastName
+  });
+  
+  snaptr('track', 'PURCHASE',{
+    'price': event.data.checkout.totalPrice.amount,
+    'currency': event.data.checkout.totalPrice.currencyCode,
+    'transaction_id': event.data.checkout.order.id
+  }); 
+});
